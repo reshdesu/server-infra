@@ -63,3 +63,9 @@ fi
 echo "Reloading systemd daemon..."
 sudo systemctl daemon-reload
 echo "Caddy setup finished! Make sure the 'caddy' binary is placed at /usr/local/bin/caddy, then run: sudo systemctl enable --now caddy"
+
+# Configure local Git hooks path for security scanning
+if command -v git >/dev/null 2>&1 && [ -d ".git" ]; then
+    echo "Configuring local Git hooks..."
+    git config core.hooksPath .githooks
+fi

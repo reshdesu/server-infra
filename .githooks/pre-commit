@@ -1,0 +1,41 @@
+#!/bin/bash
+# .githooks/pre-commit - Git pre-commit hook to prevent secret leaks
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+GREEN='\033[0;32m'
+
+leaks_found=0
+
+# 1. Check for Private Keys
+if git diff --cached | grep -qE "BEGIN (RSA |EC |PGP |OPENSSH )?PRIV""ATE KEY"; then
+    echo -e "${RED}ERROR: Staged changes contain a PRIVATE KEY!${NC}"
+    leaks_found=1
+fi
+
+# 2. Check for Certificates (good practice to avoid committing public certs too)
+if git diff --cached | grep -qE "BEGIN CERT""IFICATE"; then
+    echo -e "${RED}ERROR: Staged changes contain a CERTIFICATE!${NC}"
+    leaks_found=1
+fi
+
+# 3. Check for specific private Tailscale domains (excluding the placeholder)
+# Matches added lines containing a .ts.net domain but ignores the allowed placeholder
+if git diff --cached | grep -E "^\+[^*#]*[a-zA-Z0-9.-]+\.ts\.net" | grep -qv "your-media-center.ts.net"; then
+    echo -e "${RED}ERROR: Staged changes contain a private Tailscale domain (.ts.net)!${NC}"
+    echo -e "Please sanitize your domain to 'your-media-center.ts.net' before committing."
+    leaks_found=1
+fi
+
+# 4. Check for Sonarr/Radarr/Prowlarr API keys in config files
+if git diff --cached | grep -qE "ApiKey>[a-zA-Z0-9]{32}<"; then
+    echo -e "${RED}ERROR: Staged changes contain an XML ApiKey element!${NC}"
+    leaks_found=1
+fi
+
+if [ $leaks_found -ne 0 ]; then
+    echo -e "${RED}Commit blocked. Please remove the secrets and try again.${NC}"
+    exit 1
+fi
+
+exit 0

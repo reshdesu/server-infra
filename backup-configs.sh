@@ -32,7 +32,13 @@ sudo tar --exclude='plex/Library/Application Support/Plex Media Server/Cache' \
 echo "Restarting Docker containers..."
 sudo docker compose -f ./arr-stack/docker-compose.yml start
 
+# 5. Rotate backups: Keep only the most recent 7 backups
+RETENTION_DAYS=7
+echo "Cleaning up backups older than $RETENTION_DAYS days..."
+find "$BACKUP_DIR" -name "arr-stack-config-*.tar.gz" -type f -mtime +$RETENTION_DAYS -delete
+
 echo "=========================================================="
 echo "Backup complete! File saved to:"
 echo "  $BACKUP_FILE"
+echo "Backup rotation complete (kept last $RETENTION_DAYS backups)."
 echo "=========================================================="

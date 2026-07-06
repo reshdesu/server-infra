@@ -78,3 +78,13 @@ if command -v git >/dev/null 2>&1 && [ -d ".git" ]; then
     echo "Configuring local Git hooks..."
     git config core.hooksPath .githooks
 fi
+
+# Configure automated daily backup cron job
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "Configuring daily backup cron job in /etc/cron.d/arr-stack-backup..."
+cat <<EOF | sudo tee /etc/cron.d/arr-stack-backup > /dev/null
+# Daily backup of Odin media server configurations at 3:00 AM
+0 3 * * * root cd $REPO_DIR && ./backup-configs.sh > /dev/null 2>&1
+EOF
+sudo chmod 0644 /etc/cron.d/arr-stack-backup
+echo "✓ Scheduled daily backup at 3:00 AM."

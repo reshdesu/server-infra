@@ -1,0 +1,133 @@
+version: "3.8"
+
+services:
+  # VPN & Torrent Client (Optional VPN using Gluetun)
+  # To route torrent traffic through a VPN, uncomment gluetun and update its config,
+  # then change qbittorrent's network_mode to "service:gluetun".
+  #
+  # gluetun:
+  #   image: qmcgaw/gluetun
+  #   container_name: gluetun
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - /dev/net/tun:/dev/net/tun
+  #   ports:
+  #     - 8888:8888/tcp # HTTP control server
+  #     - 8080:8080/tcp # qBittorrent Web UI port redirection
+  #     - 6881:6881/tcp # torrent
+  #     - 6881:6881/udp # torrent
+  #   volumes:
+  #     - ./gluetun:/gluetun
+  #   environment:
+  #     - VPN_SERVICE_PROVIDER=custom
+  #     - VPN_TYPE=wireguard
+  #     # Add your VPN credentials/config here
+  #   restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - WEBUI_PORT=8080
+    volumes:
+      - ./config/qbittorrent:/config
+      # Mount the entire media root so qBittorrent and the Arrs share the same mount, allowing hardlinks
+      - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
+    ports:
+      # If routing through gluetun VPN, comment out these ports and let gluetun expose 8080 and 6881
+      - 8082:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/sonarr:/config
+      - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/radarr:/config
+      - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/bazarr:/config
+      - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/sabnzbd:/config
+      - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - VERSION=docker
+    volumes:
+      - ./config/plex:/config
+      - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
+    devices:
+      - /dev/dri:/dev/dri # Passes through host GPU for hardware transcoding (Plex Pass required)
+    restart: unless-stopped
+
+
+

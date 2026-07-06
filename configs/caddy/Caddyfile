@@ -1,19 +1,19 @@
-# Production Caddyfile template
-# Replace domain.com with your actual domain or IP address
+# Caddy configuration for secure local Arr stack access
+# Replace your-media-center.ts.net with your actual Tailscale domain, local IP, or public domain
+your-media-center.ts.net {
+    # Sonarr
+    reverse_proxy /sonarr* localhost:8989
 
-domain.com {
-    # Specify the local paths to your SSL certificate and private key (since this is an air-gapped setup)
-    tls /etc/ssl/certs/domain.crt /etc/ssl/private/domain.key
+    # Radarr
+    reverse_proxy /radarr* localhost:7878
 
-    # Reverse proxy to your backend application running on port 8080
-    reverse_proxy localhost:8080
+    # Prowlarr
+    reverse_proxy /prowlarr* localhost:9696
 
-    # Serve static files from a specific directory if needed
-    # root * /var/www/html
-    # file_server
+    # SABnzbd
+    reverse_proxy /sabnzbd* localhost:8080
 
-    # Logging configuration
-    log {
-        output file /var/log/caddy/access.log
-    }
+    # Serve static dashboard for the root domain /
+    root * /var/www/dashboard
+    file_server
 }

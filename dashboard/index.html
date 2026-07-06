@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odin Media Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --card-hover-border: rgba(255, 255, 255, 0.15);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* Service Accent Colors */
+            --plex-color: #e5a93b;
+            --sonarr-color: #00a4e4;
+            --radarr-color: #ffc233;
+            --prowlarr-color: #9a58c6;
+            --sabnzbd-color: #f1c40f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(90, 47, 169, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 164, 228, 0.12) 0%, transparent 45%);
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 12px #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255, 255, 255, 0.04), transparent 40%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--card-hover-border);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Specific card glow effects */
+        .card.plex:hover { box-shadow: 0 10px 30px -10px rgba(229, 169, 59, 0.2); }
+        .card.sonarr:hover { box-shadow: 0 10px 30px -10px rgba(0, 164, 228, 0.2); }
+        .card.radarr:hover { box-shadow: 0 10px 30px -10px rgba(255, 194, 51, 0.2); }
+        .card.prowlarr:hover { box-shadow: 0 10px 30px -10px rgba(154, 88, 198, 0.2); }
+        .card.sabnzbd:hover { box-shadow: 0 10px 30px -10px rgba(241, 196, 15, 0.2); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 2;
+        }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Accent borders for wrappers */
+        .plex .icon-wrapper { border-color: rgba(229, 169, 59, 0.15); background: rgba(229, 169, 59, 0.03); }
+        .sonarr .icon-wrapper { border-color: rgba(0, 164, 228, 0.15); background: rgba(0, 164, 228, 0.03); }
+        .radarr .icon-wrapper { border-color: rgba(255, 194, 51, 0.15); background: rgba(255, 194, 51, 0.03); }
+        .prowlarr .icon-wrapper { border-color: rgba(154, 88, 198, 0.15); background: rgba(154, 88, 198, 0.03); }
+        .sabnzbd .icon-wrapper { border-color: rgba(241, 196, 15, 0.15); background: rgba(241, 196, 15, 0.03); }
+
+        .icon-wrapper svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .arrow-icon {
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .card:hover .arrow-icon {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: auto;
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.2rem; }
+            .container { padding: 20px 10px; gap: 30px; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                Odin Online
+            </div>
+            <h1>Odin Media Center</h1>
+        </header>
+
+        <main class="grid" id="card-grid">
+            <!-- Plex Card -->
+            <a href="http://odin:32400/web" class="card plex" target="_blank">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <!-- Plex Icon (Custom SVG) -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 12L12 22L22 12L12 2ZM11.25 7.15L15.65 12L11.25 16.85V7.15Z" fill="var(--plex-color)"/>
+                        </svg>
+                    </div>
+                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title" style="color: var(--plex-color);">Plex</div>
+                    <div class="card-desc">Stream movie, TV show, and music libraries locally or remotely on any device.</div>
+                </div>
+            </a>
+
+            <!-- Sonarr Card -->
+            <a href="/sonarr" class="card sonarr">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <!-- Sonarr Icon -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3C7.03 3 3 7.03 3 12C3 16.97 7.03 21 12 21C16.97 21 21 16.97 21 12C21 7.03 16.97 3 12 3ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="var(--sonarr-color)"/>
+                        </svg>
+                    </div>
+                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title" style="color: var(--sonarr-color);">Sonarr</div>
+                    <div class="card-desc">Track and automatically manage your TV show collection and downloads.</div>
+                </div>
+            </a>
+
+            <!-- Radarr Card -->
+            <a href="/radarr" class="card radarr">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <!-- Radarr Icon -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM15.07 11.25L13.5 12.8V7H10.5V12.8L8.93 11.25L6.8 13.38L12 18.58L17.2 13.38L15.07 11.25Z" fill="var(--radarr-color)"/>
+                        </svg>
+                    </div>
+                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title" style="color: var(--radarr-color);">Radarr</div>
+                    <div class="card-desc">Search, organize, and monitor your movie libraries with automated downloads.</div>
+                </div>
+            </a>
+
+            <!-- Prowlarr Card -->
+            <a href="/prowlarr" class="card prowlarr">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <!-- Prowlarr Icon -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 16.5H13V18.5H11V16.5ZM12.75 5.5C14.7 5.5 16.25 7.05 16.25 9C16.25 10.35 15.35 11.1 14.53 11.83C13.78 12.5 13 13.19 13 14.5H11C11 12.81 11.88 12.06 12.72 11.38C13.44 10.8 14.25 10.15 14.25 9C14.25 7.76 13.24 6.75 12 6.75C10.76 6.75 9.75 7.76 9.75 9H7.75C7.75 6.65 9.65 4.75 12 4.75V5.5Z" fill="var(--prowlarr-color)"/>
+                        </svg>
+                    </div>
+                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title" style="color: var(--prowlarr-color);">Prowlarr</div>
+                    <div class="card-desc">Index manager to coordinate search feeds across Sonarr, Radarr, and SABnzbd.</div>
+                </div>
+            </a>
+
+            <!-- SABnzbd Card -->
+            <a href="/sabnzbd" class="card sabnzbd">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <!-- SABnzbd Icon -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H7V11H17V13Z" fill="var(--sabnzbd-color)"/>
+                        </svg>
+                    </div>
+                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+                <div class="card-body">
+                    <div class="card-title" style="color: var(--sabnzbd-color);">SABnzbd</div>
+                    <div class="card-desc">High-speed USENET binary newsreader client that automatically unpacks files.</div>
+                </div>
+            </a>
+        </main>
+
+        <footer>
+            Odin Media Stack • Hosted Natively on Linux
+        </footer>
+    </div>
+
+    <script>
+        // Smooth hover effect following the cursor coordinates (hover light glow)
+        const grid = document.getElementById("card-grid");
+        grid.onmousemove = e => {
+            for(const card of document.getElementsByClassName("card")) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
+
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            };
+        }
+    </script>
+</body>
+</html>

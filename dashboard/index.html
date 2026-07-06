@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Odin Media Center</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -72,6 +73,21 @@
             font-size: 2.2rem;
             font-weight: 800;
             letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0px;
+        }
+
+        .logo-img {
+            width: auto;
+            height: 0.9em;
+            margin-right: 12px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        .logo-text-title {
             background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -305,7 +321,9 @@
                 <span class="status-dot"></span>
                 Odin Status OK
             </div>
-            <h1>Odin Media Center</h1>
+            <h1>
+                <img class="logo-img" src="logo.png" alt="Odin Logo"><span class="logo-text-title">Odin Media Center</span>
+            </h1>
         </header>
 
         <!-- Dynamic Filter & Search Bar -->

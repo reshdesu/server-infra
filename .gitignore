@@ -1,0 +1,7 @@
+# Ignore certificates and private keys
+certs/*
+!certs/README.md
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db

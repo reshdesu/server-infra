@@ -1,0 +1,19 @@
+# Production Caddyfile template
+# Replace domain.com with your actual domain or IP address
+
+domain.com {
+    # Specify the local paths to your SSL certificate and private key (since this is an air-gapped setup)
+    tls /etc/ssl/certs/domain.crt /etc/ssl/private/domain.key
+
+    # Reverse proxy to your backend application running on port 8080
+    reverse_proxy localhost:8080
+
+    # Serve static files from a specific directory if needed
+    # root * /var/www/html
+    # file_server
+
+    # Logging configuration
+    log {
+        output file /var/log/caddy/access.log
+    }
+}

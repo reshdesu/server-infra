@@ -488,15 +488,27 @@
             }
         }
 
+        // Configure which cards to display (set to false to hide completely)
+        const enabledServices = {
+            plex: true,
+            sonarr: true,
+            radarr: true,
+            prowlarr: true,
+            sabnzbd: true,
+            qbittorrent: false, // Set to true if you use torrents
+            bazarr: true
+        };
+
         // Run checks once page loads
         window.addEventListener('DOMContentLoaded', () => {
-            checkServiceStatus('/plex/', 'status-plex');
-            checkServiceStatus('/sonarr/', 'status-sonarr');
-            checkServiceStatus('/radarr/', 'status-radarr');
-            checkServiceStatus('/prowlarr/', 'status-prowlarr');
-            checkServiceStatus('/sabnzbd/', 'status-sabnzbd');
-            checkServiceStatus('/qbittorrent/', 'status-qbittorrent');
-            checkServiceStatus('/bazarr/', 'status-bazarr');
+            for (const [service, enabled] of Object.entries(enabledServices)) {
+                const card = document.querySelector(`.card.${service}`);
+                if (!enabled) {
+                    if (card) card.style.display = 'none';
+                } else {
+                    checkServiceStatus(`/${service}/`, `status-${service}`);
+                }
+            }
         });
     </script>
 </body>

@@ -8,6 +8,7 @@ This repository holds the configurations, scripts, and system service definition
 * [certs/](./certs/) - Secure storage instructions for TLS/SSL certificates (ignored by Git).
 * [arr-stack/](./arr-stack/) - Docker Compose configurations for the Servarr system (Sonarr, Radarr, Prowlarr, Plex, SABnzbd, etc.).
 * [dashboard/](./dashboard/) - The Odin Media Center dashboard files.
+* [.githooks/](./.githooks/) - Git hook configurations to automatically prevent committing secrets and private Tailscale domains.
 * [setup.sh](./setup.sh) - Bash script to automate installation and deployment.
 * [migrate.sh](./migrate.sh) - Bash script to migrate host systemd Arr configurations to the Docker stack.
 * [backup-configs.sh](./backup-configs.sh) - Bash script to back up Docker container configurations to `/mnt/media/Backups/`.

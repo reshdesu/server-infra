@@ -22,6 +22,8 @@
             --radarr-color: #ffc233;
             --prowlarr-color: #9a58c6;
             --sabnzbd-color: #f1c40f;
+            --qbittorrent-color: #2b73b8;
+            --bazarr-color: #3caab5;
         }
 
         * {
@@ -47,7 +49,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             width: 100%;
             padding: 40px 20px;
             display: flex;
@@ -152,6 +154,8 @@
         .card.radarr:hover { box-shadow: 0 10px 30px -10px rgba(255, 194, 51, 0.2); }
         .card.prowlarr:hover { box-shadow: 0 10px 30px -10px rgba(154, 88, 198, 0.2); }
         .card.sabnzbd:hover { box-shadow: 0 10px 30px -10px rgba(241, 196, 15, 0.2); }
+        .card.qbittorrent:hover { box-shadow: 0 10px 30px -10px rgba(43, 115, 184, 0.2); }
+        .card.bazarr:hover { box-shadow: 0 10px 30px -10px rgba(60, 170, 181, 0.2); }
 
         .card-header {
             display: flex;
@@ -177,11 +181,36 @@
         .radarr .icon-wrapper { border-color: rgba(255, 194, 51, 0.15); background: rgba(255, 194, 51, 0.03); }
         .prowlarr .icon-wrapper { border-color: rgba(154, 88, 198, 0.15); background: rgba(154, 88, 198, 0.03); }
         .sabnzbd .icon-wrapper { border-color: rgba(241, 196, 15, 0.15); background: rgba(241, 196, 15, 0.03); }
+        .qbittorrent .icon-wrapper { border-color: rgba(43, 115, 184, 0.15); background: rgba(43, 115, 184, 0.03); }
+        .bazarr .icon-wrapper { border-color: rgba(60, 170, 181, 0.15); background: rgba(60, 170, 181, 0.03); }
 
         .icon-wrapper svg {
             width: 32px;
             height: 32px;
         }
+
+        /* Live status indicator on card */
+        .status-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .status-dot-service {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-dot-service.pending { background-color: #64748b; }
+        .status-dot-service.online { background-color: #10b981; box-shadow: 0 0 6px #10b981; }
+        .status-dot-service.offline { background-color: #ef4444; box-shadow: 0 0 6px #ef4444; }
 
         .arrow-icon {
             color: var(--text-muted);
@@ -262,10 +291,13 @@
                             <path d="M12 2L2 12L12 22L22 12L12 2ZM11.25 7.15L15.65 12L11.25 16.85V7.15Z" fill="var(--plex-color)"/>
                         </svg>
                     </div>
-                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <div class="status-container">
+                        <span class="status-dot-service pending" id="status-plex"></span>
+                        <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="card-title" style="color: var(--plex-color);">Plex</div>
@@ -282,10 +314,13 @@
                             <path d="M12 3C7.03 3 3 7.03 3 12C3 16.97 7.03 21 12 21C16.97 21 21 16.97 21 12C21 7.03 16.97 3 12 3ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="var(--sonarr-color)"/>
                         </svg>
                     </div>
-                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <div class="status-container">
+                        <span class="status-dot-service pending" id="status-sonarr"></span>
+                        <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="card-title" style="color: var(--sonarr-color);">Sonarr</div>
@@ -302,10 +337,13 @@
                             <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM15.07 11.25L13.5 12.8V7H10.5V12.8L8.93 11.25L6.8 13.38L12 18.58L17.2 13.38L15.07 11.25Z" fill="var(--radarr-color)"/>
                         </svg>
                     </div>
-                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <div class="status-container">
+                        <span class="status-dot-service pending" id="status-radarr"></span>
+                        <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="card-title" style="color: var(--radarr-color);">Radarr</div>
@@ -322,10 +360,13 @@
                             <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 16.5H13V18.5H11V16.5ZM12.75 5.5C14.7 5.5 16.25 7.05 16.25 9C16.25 10.35 15.35 11.1 14.53 11.83C13.78 12.5 13 13.19 13 14.5H11C11 12.81 11.88 12.06 12.72 11.38C13.44 10.8 14.25 10.15 14.25 9C14.25 7.76 13.24 6.75 12 6.75C10.76 6.75 9.75 7.76 9.75 9H7.75C7.75 6.65 9.65 4.75 12 4.75V5.5Z" fill="var(--prowlarr-color)"/>
                         </svg>
                     </div>
-                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <div class="status-container">
+                        <span class="status-dot-service pending" id="status-prowlarr"></span>
+                        <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="card-title" style="color: var(--prowlarr-color);">Prowlarr</div>
@@ -342,20 +383,69 @@
                             <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H7V11H17V13Z" fill="var(--sabnzbd-color)"/>
                         </svg>
                     </div>
-                    <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+                    <div class="status-container">
+                        <span class="status-dot-service pending" id="status-sabnzbd"></span>
+                        <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="card-title" style="color: var(--sabnzbd-color);">SABnzbd</div>
                     <div class="card-desc">High-speed USENET binary newsreader client that automatically unpacks files.</div>
                 </div>
             </a>
+
+            <!-- qBittorrent Card -->
+            <a href="/qbittorrent" class="card qbittorrent">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <!-- qBittorrent Icon (Custom SVG) -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="var(--qbittorrent-color)"/>
+                        </svg>
+                    </div>
+                    <div class="status-container">
+                        <span class="status-dot-service pending" id="status-qbittorrent"></span>
+                        <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-title" style="color: var(--qbittorrent-color);">qBittorrent</div>
+                    <div class="card-desc">Fast, stable, and lightweight open-source torrent download client.</div>
+                </div>
+            </a>
+
+            <!-- Bazarr Card -->
+            <a href="/bazarr" class="card bazarr">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <!-- Bazarr Icon (Custom SVG) -->
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v13l4-4h16zm-2-8H5V5h14v2zm-4 4H5V9h10v2z" fill="var(--bazarr-color)"/>
+                        </svg>
+                    </div>
+                    <div class="status-container">
+                        <span class="status-dot-service pending" id="status-bazarr"></span>
+                        <svg class="arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-title" style="color: var(--bazarr-color);">Bazarr</div>
+                    <div class="card-desc">Companion to Sonarr and Radarr that automatically fetches subtitles.</div>
+                </div>
+            </a>
         </main>
 
         <footer>
-            Odin Media Stack • Hosted Natively on Linux
+            Odin Media Center • Hosted Natively on Linux
         </footer>
     </div>
 
@@ -372,6 +462,42 @@
                 card.style.setProperty("--mouse-y", `${y}px`);
             };
         }
+
+        // Real-time status ping checks for services via Caddy subpaths
+        async function checkServiceStatus(url, elementId) {
+            const dot = document.getElementById(elementId);
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2500); // 2.5s timeout limit
+                
+                const response = await fetch(url, { 
+                    method: 'GET', 
+                    signal: controller.signal,
+                    cache: 'no-store' 
+                });
+                clearTimeout(timeoutId);
+                
+                // If it resolves and isn't a Caddy gateway error (502 / 504), container is online
+                if (response.status !== 502 && response.status !== 504) {
+                    dot.className = 'status-dot-service online';
+                } else {
+                    dot.className = 'status-dot-service offline';
+                }
+            } catch (e) {
+                dot.className = 'status-dot-service offline';
+            }
+        }
+
+        // Run checks once page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            checkServiceStatus('/plex/', 'status-plex');
+            checkServiceStatus('/sonarr/', 'status-sonarr');
+            checkServiceStatus('/radarr/', 'status-radarr');
+            checkServiceStatus('/prowlarr/', 'status-prowlarr');
+            checkServiceStatus('/sabnzbd/', 'status-sabnzbd');
+            checkServiceStatus('/qbittorrent/', 'status-qbittorrent');
+            checkServiceStatus('/bazarr/', 'status-bazarr');
+        });
     </script>
 </body>
 </html>

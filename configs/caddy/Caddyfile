@@ -1,6 +1,9 @@
 # Caddy configuration for secure local Arr stack access
 # Replace your-media-center.ts.net with your actual Tailscale domain, local IP, or public domain
 your-media-center.ts.net {
+    # Plex (internal proxy for status check)
+    reverse_proxy /plex* localhost:32400
+
     # Sonarr
     reverse_proxy /sonarr* localhost:8989
 
@@ -12,6 +15,12 @@ your-media-center.ts.net {
 
     # SABnzbd
     reverse_proxy /sabnzbd* localhost:8080
+
+    # qBittorrent
+    reverse_proxy /qbittorrent* localhost:8082
+
+    # Bazarr
+    reverse_proxy /bazarr* localhost:6767
 
     # Serve static dashboard for the root domain /
     root * /var/www/dashboard

@@ -65,3 +65,27 @@ Because they share the `/data` mount point, Sonarr and Radarr can create instant
 To expose these services using your host web server (Caddy), you can create subdomains pointing to the docker host ports.
 
 See the configuration templates in [configs/caddy/Caddyfile](../configs/caddy/Caddyfile) for reverse-proxy setup examples.
+
+---
+
+## Networking & Troubleshooting
+
+### 1. Connecting Services inside Web UIs
+Since the applications run inside isolated Docker containers, they cannot communicate using `localhost` or `127.0.0.1`. You must use their **Docker container service names** as the host addresses:
+* To connect Sonarr/Radarr to **Prowlarr**: Use `http://prowlarr:9696`
+* To connect Sonarr/Radarr to **SABnzbd**: Use `http://sabnzbd:8080`
+* To connect Prowlarr to **Sonarr**: Use `http://sonarr:8989`
+* To connect Prowlarr to **Radarr**: Use `http://radarr:7878`
+
+### 2. SABnzbd 403 Forbidden Error (Host Whitelist)
+If Sonarr or Radarr returns a `403 Forbidden` error when trying to connect to SABnzbd:
+1. Open `config/sabnzbd/sabnzbd.ini`.
+2. Find the `host_whitelist` key under `[misc]`.
+3. Append `, sabnzbd` to the end of the whitelist, for example:
+   ```ini
+   host_whitelist = your-host, sabnzbd
+   ```
+4. Restart the SABnzbd container:
+   ```bash
+   docker compose restart sabnzbd
+   ```

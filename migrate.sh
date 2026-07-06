@@ -72,6 +72,20 @@ sudo chown -R "$USER_UID":"$USER_GID" ./arr-stack/config
 # Remove pid files to prevent startup locks in docker
 find ./arr-stack/config/ -name "*.pid" -type f -delete 2>/dev/null || true
 
+# 5b. Fix ownership of pre-existing media library files
+# Files created by old native system users (sonarr, radarr, etc.) will have a different
+# UID than the Docker containers (which run as PUID/PGID = current user). This causes
+# "Access to path is denied" errors when the arr apps try to delete or move those files.
+MEDIA_ROOT="${MEDIA_ROOT:-/mnt/media}"
+if [ -d "$MEDIA_ROOT" ]; then
+    echo "Fixing ownership of pre-existing media files under $MEDIA_ROOT..."
+    echo "(Only files/dirs not already owned by $USER_UID will be updated — this may take a moment on large libraries.)"
+    sudo find "$MEDIA_ROOT" -not -user "$USER_UID" -exec chown "$USER_UID":"$USER_GID" {} +
+    echo "✓ Media library ownership corrected to $USER_UID:$USER_GID."
+else
+    echo "✗ MEDIA_ROOT ($MEDIA_ROOT) not found. Skipping media ownership fix."
+fi
+
 # 6. Back up host Caddyfile
 if [ -f "/etc/caddy/Caddyfile" ]; then
     echo "Backing up your host Caddyfile to ./configs/caddy/Caddyfile for Git tracking..."

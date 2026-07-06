@@ -1,6 +1,10 @@
 # Caddy configuration for secure local Arr stack access
 # Replace your-media-center.ts.net with your actual Tailscale domain, local IP, or public domain
 your-media-center.ts.net {
+    tls {
+        get_certificate tailscale
+    }
+
     # Plex (internal proxy for status check)
     reverse_proxy /plex* localhost:32400
 

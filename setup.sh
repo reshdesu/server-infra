@@ -25,6 +25,15 @@ sudo mkdir -p /var/log/caddy
 if [ -f "./configs/caddy/Caddyfile" ]; then
     sudo cp ./configs/caddy/Caddyfile /etc/caddy/Caddyfile
     echo "Copied Caddyfile to /etc/caddy/Caddyfile"
+
+    # Automatically configure actual Tailscale domain if running
+    if command -v tailscale >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+        TAILSCALE_DOMAIN=$(tailscale status --json | jq -r .Self.DNSName 2>/dev/null | sed 's/\.$//' || true)
+        if [ -n "$TAILSCALE_DOMAIN" ]; then
+            echo "Configuring Caddy for Tailscale domain: $TAILSCALE_DOMAIN"
+            sudo sed -i "s/your-media-center\.ts\.net/$TAILSCALE_DOMAIN/g" /etc/caddy/Caddyfile
+        fi
+    fi
 else
     echo "Error: Caddyfile not found in ./configs/caddy/"
     exit 1

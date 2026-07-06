@@ -10,19 +10,19 @@
     <style>
         :root {
             --bg-color: #060911;
-            --card-bg: rgba(15, 23, 42, 0.3);
+            --card-bg: rgba(15, 23, 42, 0.35);
             --card-border: rgba(255, 255, 255, 0.04);
             --card-hover-border: rgba(255, 255, 255, 0.12);
             --text-main: #f8fafc;
             --text-muted: #64748b;
             
             /* Service Accent Colors */
-            --plex-color: #e5a93b;
-            --sonarr-color: #38bdf8;
-            --radarr-color: #fbbf24;
-            --prowlarr-color: #a78bfa;
-            --sabnzbd-color: #facc15;
-            --qbittorrent-color: #3b82f6;
+            --plex-color: #e5a00d;
+            --sonarr-color: #00caef;
+            --radarr-color: #ffc230;
+            --prowlarr-color: #ff6a2f;
+            --sabnzbd-color: #ffb300;
+            --qbittorrent-color: #356ebf;
             --bazarr-color: #2dd4bf;
         }
 
@@ -170,38 +170,39 @@
         }
 
         /* Custom Hover Border and Box Shadow Glows */
-        .card.plex:hover { border-color: rgba(229, 169, 59, 0.3); box-shadow: 0 0 20px rgba(229, 169, 59, 0.08); }
-        .card.sonarr:hover { border-color: rgba(56, 189, 248, 0.3); box-shadow: 0 0 20px rgba(56, 189, 248, 0.08); }
-        .card.radarr:hover { border-color: rgba(251, 191, 36, 0.3); box-shadow: 0 0 20px rgba(251, 191, 36, 0.08); }
-        .card.prowlarr:hover { border-color: rgba(167, 139, 250, 0.3); box-shadow: 0 0 20px rgba(167, 139, 250, 0.08); }
-        .card.sabnzbd:hover { border-color: rgba(250, 204, 21, 0.3); box-shadow: 0 0 20px rgba(250, 204, 21, 0.08); }
-        .card.qbittorrent:hover { border-color: rgba(59, 130, 246, 0.3); box-shadow: 0 0 20px rgba(59, 130, 246, 0.08); }
+        .card.plex:hover { border-color: rgba(229, 160, 13, 0.3); box-shadow: 0 0 20px rgba(229, 160, 13, 0.08); }
+        .card.sonarr:hover { border-color: rgba(0, 202, 239, 0.3); box-shadow: 0 0 20px rgba(0, 202, 239, 0.08); }
+        .card.radarr:hover { border-color: rgba(255, 194, 48, 0.3); box-shadow: 0 0 20px rgba(255, 194, 48, 0.08); }
+        .card.prowlarr:hover { border-color: rgba(255, 106, 47, 0.3); box-shadow: 0 0 20px rgba(255, 106, 47, 0.08); }
+        .card.sabnzbd:hover { border-color: rgba(255, 179, 0, 0.3); box-shadow: 0 0 20px rgba(255, 179, 0, 0.08); }
+        .card.qbittorrent:hover { border-color: rgba(53, 110, 191, 0.3); box-shadow: 0 0 20px rgba(53, 110, 191, 0.08); }
         .card.bazarr:hover { border-color: rgba(45, 212, 191, 0.3); box-shadow: 0 0 20px rgba(45, 212, 191, 0.08); }
 
         .icon-wrapper {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
+            width: 48px;
+            height: 48px;
+            border-radius: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.04);
             flex-shrink: 0;
+            overflow: hidden;
         }
 
-        /* Accent borders for wrappers */
-        .plex .icon-wrapper { border-color: rgba(229, 169, 59, 0.12); background: rgba(229, 169, 59, 0.02); }
-        .sonarr .icon-wrapper { border-color: rgba(56, 189, 248, 0.12); background: rgba(56, 189, 248, 0.02); }
-        .radarr .icon-wrapper { border-color: rgba(251, 191, 36, 0.12); background: rgba(251, 191, 36, 0.02); }
-        .prowlarr .icon-wrapper { border-color: rgba(167, 139, 250, 0.12); background: rgba(167, 139, 250, 0.02); }
-        .sabnzbd .icon-wrapper { border-color: rgba(250, 204, 21, 0.12); background: rgba(250, 204, 21, 0.02); }
-        .qbittorrent .icon-wrapper { border-color: rgba(59, 130, 246, 0.12); background: rgba(59, 130, 246, 0.02); }
-        .bazarr .icon-wrapper { border-color: rgba(45, 212, 191, 0.12); background: rgba(45, 212, 191, 0.02); }
+        /* Accent backgrounds for wrappers to integrate official icons nicely */
+        .plex .icon-wrapper { border-color: rgba(229, 160, 13, 0.15); background: rgba(255, 255, 255, 0.01); }
+        .sonarr .icon-wrapper { border-color: rgba(0, 202, 239, 0.15); background: rgba(255, 255, 255, 0.01); }
+        .radarr .icon-wrapper { border-color: rgba(255, 194, 48, 0.15); background: rgba(255, 255, 255, 0.01); }
+        .prowlarr .icon-wrapper { border-color: rgba(255, 106, 47, 0.15); background: rgba(255, 255, 255, 0.01); }
+        .sabnzbd .icon-wrapper { border-color: rgba(255, 179, 0, 0.15); background: rgba(255, 255, 255, 0.01); }
+        .qbittorrent .icon-wrapper { border-color: rgba(53, 110, 191, 0.15); background: rgba(255, 255, 255, 0.01); }
+        .bazarr .icon-wrapper { border-color: rgba(45, 212, 191, 0.15); background: rgba(255, 255, 255, 0.01); }
 
         .icon-wrapper svg {
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
         }
 
         .card-info {
@@ -320,9 +321,9 @@
             <!-- Plex Card -->
             <a href="https://app.plex.tv/desktop" class="card plex" target="_blank">
                 <div class="icon-wrapper">
-                    <!-- Plex Icon -->
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 12L12 22L22 12L12 2ZM11.25 7.15L15.65 12L11.25 16.85V7.15Z" fill="var(--plex-color)"/>
+                    <!-- Official Plex Icon (Chevron only) -->
+                    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="var(--plex-color)" d="M256 70H148l108 186-108 186h108l108-186z"/>
                     </svg>
                 </div>
                 <div class="card-info">
@@ -337,9 +338,13 @@
             <!-- Sonarr Card -->
             <a href="/sonarr" class="card sonarr">
                 <div class="icon-wrapper">
-                    <!-- Sonarr Icon -->
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 3C7.03 3 3 7.03 3 12C3 16.97 7.03 21 12 21C16.97 21 21 16.97 21 12C21 7.03 16.97 3 12 3ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="var(--sonarr-color)"/>
+                    <!-- Official Sonarr Icon -->
+                    <svg xml:space="preserve" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M511.8 256c0 70.4-24.9 130.8-74.6 181.1-1.7 2-3.5 3.8-5.5 5.4-8.2 8-16.8 15.3-26 21.8Q341.05 512 256.3 512c-56.6 0-106.3-15.9-149.2-47.7-11.3-8-22-17.1-31.9-27.3C36.5 398.7 12.8 354 4 303.2c-1.7-9.9-2.9-20-3.4-30.2-.2-5.7-.4-11.3-.4-17 0-6 .1-11.7.4-17.1 0-.6.2-1.1.5-1.7 3.7-62.8 28.4-117 74.1-162.8C125.5 24.8 185.8 0 256.2 0c70.7 0 131 24.8 180.9 74.5q74.7 75.9 74.7 181.5" style="fill-rule:evenodd;clip-rule:evenodd;fill:#1b1d22"/>
+                        <path d="m459.7 100.3-52.9 52.9c-30.9 30.9-33.6 57.8-33.6 105.3 0 42.3 6.7 81.1 38.2 112.6 23 23 44.9 44.7 44.9 44.7-5.9 7.2-12.3 14.3-19.1 21.2-1.7 2-3.5 3.8-5.5 5.4-6 5.9-12.2 11.4-18.6 16.4l-41.4-41.4C334.9 380.6 305.6 377 257 377c-46.7 0-78.4 4.3-112.6 38.5-20.4 20.4-43.8 43.9-43.8 43.9-8.9-6.8-17.3-14.2-25.3-22.4-6.6-6.6-12.8-13.4-18.5-20.3 0 0 23.1-23.2 45.2-45.3 32.7-32.7 38-70.6 38-113 0-41.3-6.8-79.8-36.8-109.9C82.2 127.7 53.3 99 53.3 99c6.7-8.5 14-16.7 21.8-24.5 6.9-6.8 14-13.1 21.2-19l48 48c30.7 30.7 70 38.6 112.4 38.6 43.6 0 82.8-8.4 114.7-40.4C391 82.1 417 56.3 417 56.3c6.8 5.6 13.5 11.6 20.1 18.2 8.3 8.3 15.8 16.9 22.6 25.8" style="fill-rule:evenodd;clip-rule:evenodd;fill:#2b2f3a"/>
+                        <path d="M186 269.1c-.5-2.8-.8-5.5-.9-8.4-.1-1.6-.1-3.1-.1-4.7 0-1.7 0-3.2.1-4.7 0-.2 0-.3.1-.5 1-17.4 7.9-32.4 20.5-45.1 13.9-13.8 30.6-20.7 50.2-20.7s36.3 6.9 50.2 20.7c13.8 14 20.7 30.8 20.7 50.3s-6.9 36.2-20.7 50.2c-.5.5-1 1.1-1.5 1.5q-3.45 3.3-7.2 6-18 13.2-41.4 13.2c-23.4 0-29.4-4.4-41.3-13.2-3.1-2.2-6.1-4.7-8.9-7.6-10.8-10.6-17.3-22.9-19.8-37" style="fill-rule:evenodd;clip-rule:evenodd;fill:var(--sonarr-color)"/>
+                        <path d="m372.7 141-35.4 34.6M72.9 76.8l96.5 96.1m199.7 198.9 65.6 67.9m4.4-363.3L372.7 141M76.6 438.5l64.6-64.7" style="fill:none;stroke:var(--sonarr-color);stroke-width:20;stroke-miterlimit:1"/>
+                        <path d="m372.7 141-40 40.6m-193.3-38.5 40.6 40.5M141 374l39.5-41.1m146.2-3.3 42.6 42.4" style="fill:none;stroke:var(--sonarr-color);stroke-width:20;stroke-miterlimit:1"/>
                     </svg>
                 </div>
                 <div class="card-info">
@@ -354,9 +359,15 @@
             <!-- Radarr Card -->
             <a href="/radarr" class="card radarr">
                 <div class="icon-wrapper">
-                    <!-- Radarr Icon -->
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM15.07 11.25L13.5 12.8V7H10.5V12.8L8.93 11.25L6.8 13.38L12 18.58L17.2 13.38L15.07 11.25Z" fill="var(--radarr-color)"/>
+                    <!-- Official Radarr Icon -->
+                    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="translate(70 21)">
+                            <!-- Silver Rings -->
+                            <path d="m10.3 59.8 3.9 372.4c-31.4 3.9-54.9-11.8-54.9-43.1l-3.9-309.7c0-98 90.2-121.5 145.1-82.3l278.3 160.7c39.2 27.4 47 78.4 27.4 113.7-3.9-27.4-15.7-43.1-39.2-58.8L53.4 36.2C29.9 20.6 10.3 24.5 10.3 59.8" fill="#cbd5e1"/>
+                            <path d="M-13.2 451.8c23.5 7.8 47 3.9 66.6-7.8l321.5-188.2c19.6 27.4 15.7 54.9-7.8 70.6L96.5 483.2c-39.2 19.6-90.1 0-109.7-31.4" fill="#cbd5e1"/>
+                            <!-- Yellow Radar Slice -->
+                            <path d="M80.9 342 273 232.3 84.8 126.4z" fill="var(--radarr-color)"/>
+                        </g>
                     </svg>
                 </div>
                 <div class="card-info">
@@ -371,9 +382,29 @@
             <!-- Prowlarr Card -->
             <a href="/prowlarr" class="card prowlarr">
                 <div class="icon-wrapper">
-                    <!-- Prowlarr Icon -->
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 16.5H13V18.5H11V16.5ZM12.75 5.5C14.7 5.5 16.25 7.05 16.25 9C16.25 10.35 15.35 11.1 14.53 11.83C13.78 12.5 13 13.19 13 14.5H11C11 12.81 11.88 12.06 12.72 11.38C13.44 10.8 14.25 10.15 14.25 9C14.25 7.76 13.24 6.75 12 6.75C10.76 6.75 9.75 7.76 9.75 9H7.75C7.75 6.65 9.65 4.75 12 4.75V5.5Z" fill="var(--prowlarr-color)"/>
+                    <!-- Official Prowlarr Icon -->
+                    <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="matrix(5.4 0 0 -5.4 256 460)">
+                            <!-- Prowlarr Silhouette Hat & Glasses -->
+                            <circle cx="-0.5" cy="46" r="42" fill="#2d3039"/>
+                            <path d="m-27 38.6 3 3.5 44 .1-3-3.6z" fill="#ff6a2f"/>
+                            <path d="m-3 34v-11c2-.1 3-.9 3-1.8h19v10.5z" fill="#ffe6d5"/>
+                            <path d="m-2 36.6-.1-.1c-.7-.4-1.6-.5-2.1-.5.1-.2.2-.4.4-.7.2-.3.4-.5.7-.7.9.2 1.7.9 2.1 1.3q-.7.2-1 0.7" fill="#6f2717"/>
+                            <path d="m0 33.6c.8.2 1 .4 1.5.3.7-.2 1.7-1.3 1.7-1.3l-.3-1.7s-.9.8-1.5 1.5c-1.3.3-2.1-.2-2.1-.2" fill="#fff"/>
+                            <path d="M-8.8 40.1c.2-1.1-.5-2.1-1.6-2.3-1.1-.2-2.1.5-2.3 1.6-.2 1.1.5 2.1 1.6 2.3 1.1.2 2.1-.5 2.3-1.6" fill="#ffe6d5"/>
+                            <path d="M-9.6 41.3c-.4.3-1 .4-1.6.3-1.1-.2-1.8-1.3-1.6-2.3 0-.2.1-.4.2-.6.8.3 2.2 1 3 2.6" fill="#852e1b"/>
+                            <path d="M-9.7 39.9c.1-.6-.2-1.2-.8-1.3-.6-.1-1.2.2-1.3.8s.2 1.2.8 1.3c.7.2 1.2-.2 1.3-.8" fill="#fff"/>
+                            <path d="m11.3 28.5-.8-.9h-14.3v7.3z" fill="#ff6a2f"/>
+                            <path d="m12.2 29.4c.6-.8.8-1.6.8-1.6s-2 7-8.5 7.6c-1.2-.4-2.1-1-2.7-1.4" fill="#852e1b"/>
+                            <path d="m5.6 30.5c-.2-1.1.5-2.1 1.6-2.3 1.1-.2 2.1.5 2.3 1.6.2 1.1-.5 2.1-1.6 2.3s-2.1-.5-2.3-1.6" fill="#ffe6d5"/>
+                            <path d="m6.4 31.7c.4.3 1 .4 1.5.3 1.1-.2 1.8-1.3 1.6-2.3 0-.2-.1-.4-.2-.6-.9.3-2.2 1-2.9 2.6" fill="#852e1b"/>
+                            <path d="m6.5 30.3c.1-.6-.2-1.2-.8-1.3-.6-.1-1.2.2-1.3.8s.2 1.2.8 1.3c.6.2 1.2-.2 1.3-.8" fill="#fff"/>
+                            <path d="m-8.6 20.8-1 1s3.1 6.3 7.4 7.8c4.3 1.5 7.6-.7 9.7-2.5s3.3-5.4 3.3-5.4l-.8-.8z" fill="#f46a2f"/>
+                            <path d="m-3.6 27s3.5 2.8 4.2 2.8 4-2.4 4-2.4l-.6-.7s-2.9 2.4-3.5 2.4-3.3-2.4-3.3-2.4z" fill="#852e1b"/>
+                            <path d="m-1.5 24.3c0-.6-.5-1.2-1.2-1.2s-1.2.5-1.2 1.2.5 1.2 1.2 1.2 1.2-.5 1.2-1.2" fill="#fbbf24"/>
+                            <path d="m5.3 24.3c0-.6-.5-1.2-1.2-1.2s-1.2.5-1.2 1.2.5 1.2 1.2 1.2 1.2-.5 1.2-1.2" fill="#fbbf24"/>
+                            <path d="m-5.4 20.1s-1.1-.3-1.6-1.4c-.4-1.1.2-1.9 1.1-2.1 1-.2 2.3.5 2.3.5s1.1-1.1 2.5-.8 1.8 1.8 1.1 2.8c-.6.9-2.2 1-2.2 1s-2.4-.7-3.2 0" fill="#fff"/>
+                        </g>
                     </svg>
                 </div>
                 <div class="card-info">
@@ -388,9 +419,13 @@
             <!-- SABnzbd Card -->
             <a href="/sabnzbd" class="card sabnzbd">
                 <div class="icon-wrapper">
-                    <!-- SABnzbd Icon -->
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H7V11H17V13Z" fill="var(--sabnzbd-color)"/>
+                    <!-- Official SABnzbd Icon -->
+                    <svg viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="var(--bg-color)" stroke-linejoin="round" stroke-width="40" d="M200.4 39.3h598.1v437.8h161l-460.1 483L39.4 477h161z"/>
+                        <path fill="var(--sabnzbd-color)" fill-rule="evenodd" d="M200.4 39.3h598.1v437.8h161l-460.1 483-460-483h161z"/>
+                        <path fill="#ffd54f" fill-rule="evenodd" d="M499.4 960.2 201.1 39.4h596.7z"/>
+                        <path stroke="var(--bg-color)" stroke-linecap="round" stroke-linejoin="round" stroke-width="40" d="M329.2 843.5H83v-51.8h146.1v-45.9H83V596.9h246.2v51.5H183.1v45.9h146.1zm292.2 0H375.2V694.3h146.1v-45.9H375.2v-51.5h246.2zm-146.1-97.8h46v46h-46zm192.1 97.8v-344h100.1v97.4h146.1v246.6zm100.1-195.2h46v143.4h-46z"/>
+                        <path fill="#fff" fill-rule="evenodd" d="M329.2 843.5H83v-51.8h146.1v-45.9H83V596.9h246.2v51.5H183.1v45.9h146.1zm292.2 0H375.2V694.3h146.1v-45.9H375.2v-51.5h246.2zm-146.1-51.8h46v-46h-46zm192.1 51.9v-344h100.1V597h146.1v246.6zm100.1-51.9h46V648.4h-46z"/>
                     </svg>
                 </div>
                 <div class="card-info">
@@ -405,9 +440,11 @@
             <!-- qBittorrent Card -->
             <a href="/qbittorrent" class="card qbittorrent">
                 <div class="icon-wrapper">
-                    <!-- qBittorrent Icon -->
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="var(--qbittorrent-color)"/>
+                    <!-- Official qBittorrent Icon -->
+                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="512" cy="512" r="496" fill="#356ebf" stroke="#daefff" stroke-width="24"/>
+                        <path d="M712.9 332.4c44.4 0 78.9 15.2 103.4 45.7 24.7 30.2 37 73.1 37 128.7 0 55.5-12.4 98.8-37.3 129.6-24.7 30.7-59 46-103.1 46-22 0-42.2-4-60.5-12-18.1-8.2-33.3-20.8-45.7-37.6H603l-10.8 43.5h-36.7V196h51.2v116.6c0 26.1-.8 49.6-2.5 70.4h2.5c23.9-33.7 59.3-50.6 106.2-50.6m-7.4 42.9c-35 0-60.2 10.1-75.6 30.2-15.4 20-23.1 53.7-23.1 101.2s7.9 81.6 23.8 102.1c15.8 20.4 41.2 30.5 76.2 30.5 31.5 0 54.9-11.4 70.4-34.3 15.4-23 23.1-56.1 23.1-99.1q0-66-23.1-98.4c-15.5-21.4-39.4-32.2-71.7-32.2" fill="#fff"/>
+                        <path d="M317.3 639.5c34.2 0 59-9.2 74.7-27.5 15.6-18.3 24-49.2 25-92.6V508c0-47.3-8-81.4-24.1-102.1-16-20.8-41.5-31.2-76.2-31.2-30 0-53.1 11.7-69.1 35.2-15.8 23.2-23.8 56.2-23.8 98.8s7.8 75.1 23.5 97.5c15.8 22.1 39.1 33.2 70 33.3m-7.7 42.8c-43.6 0-77.7-15.3-102.1-46-24.5-30.7-36.7-73.4-36.7-128.4 0-55.3 12.3-98.5 37-129.6s59-46.6 103.1-46.6q69.45 0 106.8 52.5h2.8l7.4-46.3h40.4v490h-51.2V683.3c0-20.6 1.1-38.1 3.4-52.5h-4c-23.8 34.4-59.4 51.5-106.9 51.5" fill="#c8e8ff"/>
                     </svg>
                 </div>
                 <div class="card-info">
@@ -422,9 +459,15 @@
             <!-- Bazarr Card -->
             <a href="/bazarr" class="card bazarr">
                 <div class="icon-wrapper">
-                    <!-- Bazarr Icon -->
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 15c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v13l4-4h16zm-2-8H5V5h14v2zm-4 4H5V9h10v2z" fill="var(--bazarr-color)"/>
+                    <!-- Official Bazarr Icon -->
+                    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="matrix(.09375 0 0 -.09375 0 48.02)">
+                            <!-- White Bubble -->
+                            <path fill="var(--bazarr-color)" d="M506 256C506 117.93 394.07 6 256 6S6 117.93 6 256s111.93 250 250 250 250-111.93 250-250"/>
+                            <path fill="none" stroke="var(--bg-color)" stroke-miterlimit="10" stroke-width="14" d="M506 256C506 117.93 394.07 6 256 6S6 117.93 6 256s111.93 250 250 250 250-111.93 250-250z"/>
+                            <!-- Subtitle text lines inside bubble -->
+                            <path fill="#060911" d="M348.36 145.31H163.22c-5.452 0-9.914 4.461-9.914 9.913v.001c0 5.452 4.462 9.913 9.914 9.913h185.14c5.452 0 9.913-4.461 9.913-9.913v-.001c0-5.452-4.461-9.913-9.913-9.913m48.18 39.81H115.049c-5.5 0-9.999 4.5-9.999 9.999s4.499 9.999 9.999 9.999H396.54c5.5 0 9.999-4.499 9.999-9.999 0-5.499-4.499-9.999-9.999-9.999"/>
+                        </g>
                     </svg>
                 </div>
                 <div class="card-info">
@@ -451,7 +494,6 @@
     <script>
         // Smooth hover effect following the cursor coordinates (hover light glow)
         const grid = document.getElementById("card-grid");
-        // We only enable coordinate tracking if not on touch devices
         if (window.matchMedia("(pointer: fine)").matches) {
             grid.onmousemove = e => {
                 for(const card of document.getElementsByClassName("card")) {

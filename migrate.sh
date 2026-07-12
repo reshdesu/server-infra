@@ -14,10 +14,10 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # 2. Stop native host services to prevent database writes
-echo "Stopping local systemd services (sonarr, radarr, prowlarr, plexmediaserver)..."
-sudo systemctl stop sonarr radarr prowlarr plexmediaserver 2>/dev/null || true
-# Also kill host-level sabnzbd process if running
-sudo killall sabnzbdplus 2>/dev/null || true
+echo "Stopping local systemd services (sonarr, radarr, prowlarr, plexmediaserver, sabnzbdplus)..."
+sudo systemctl stop sonarr radarr prowlarr plexmediaserver sabnzbdplus 2>/dev/null || true
+# Stop user-instantiated sabnzbdplus service if running
+sudo systemctl stop sabnzbdplus@* 2>/dev/null || true
 
 # 3. Create Docker config directories
 echo "Creating config directories in ./arr-stack/config/..."
@@ -57,7 +57,11 @@ fi
 
 if [ -d "$HOME/.sabnzbd" ]; then
     sudo cp -a "$HOME/.sabnzbd/." ./arr-stack/config/sabnzbd/
-    echo "✓ Copied SABnzbd configuration."
+    # Patch SABnzbd's host whitelist so Docker containers can communicate with it
+    if [ -f "./arr-stack/config/sabnzbd/sabnzbd.ini" ]; then
+        sudo sed -i 's/^host_whitelist = \(.*\)/host_whitelist = \1, sabnzbd, sabnzbd:8080/' ./arr-stack/config/sabnzbd/sabnzbd.ini
+    fi
+    echo "✓ Copied and patched SABnzbd configuration."
 else
     echo "✗ SABnzbd configuration not found. Skipping."
 fi
@@ -98,7 +102,8 @@ fi
 
 # 7. Disable native host services so they don't start on reboot
 echo "Disabling local systemd services to prevent startup conflicts..."
-sudo systemctl disable sonarr radarr prowlarr plexmediaserver 2>/dev/null || true
+sudo systemctl disable sonarr radarr prowlarr plexmediaserver sabnzbdplus 2>/dev/null || true
+sudo systemctl disable sabnzbdplus@* 2>/dev/null || true
 
 # 8. Set up .env file if it doesn't exist
 if [ ! -f "./arr-stack/.env" ]; then

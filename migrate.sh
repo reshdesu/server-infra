@@ -112,7 +112,19 @@ if [ ! -f "./arr-stack/.env" ]; then
     # Dynamically set PUID and PGID
     sed -i "s/^PUID=.*/PUID=$USER_UID/" ./arr-stack/.env
     sed -i "s/^PGID=.*/PGID=$USER_GID/" ./arr-stack/.env
-    echo "✓ Created ./arr-stack/.env with your PUID=$USER_UID and PGID=$USER_GID."
+    
+    # Dynamically set TZ based on host
+    if command -v timedatectl >/dev/null 2>&1; then
+        HOST_TZ=$(timedatectl show -p Timezone --value 2>/dev/null)
+    elif [ -f "/etc/timezone" ]; then
+        HOST_TZ=$(cat /etc/timezone)
+    fi
+    if [ -n "$HOST_TZ" ]; then
+        sed -i "s|^TZ=.*|TZ=$HOST_TZ|" ./arr-stack/.env
+        echo "✓ Created ./arr-stack/.env with your PUID=$USER_UID, PGID=$USER_GID, and TZ=$HOST_TZ."
+    else
+        echo "✓ Created ./arr-stack/.env with your PUID=$USER_UID and PGID=$USER_GID."
+    fi
 fi
 
 echo "=========================================================="

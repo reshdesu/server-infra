@@ -88,3 +88,29 @@ cat <<EOF | sudo tee /etc/cron.d/arr-stack-backup > /dev/null
 EOF
 sudo chmod 0644 /etc/cron.d/arr-stack-backup
 echo "✓ Scheduled daily backup at 3:00 AM."
+
+# Initialize Docker .env file for arr-stack if it doesn't exist
+if [ ! -f "$REPO_DIR/arr-stack/.env" ]; then
+    echo "Initializing Docker .env file for arr-stack..."
+    USER_UID=$(id -u)
+    USER_GID=$(id -g)
+    cp "$REPO_DIR/arr-stack/.env.example" "$REPO_DIR/arr-stack/.env"
+    
+    # Dynamically set PUID and PGID
+    sed -i "s/^PUID=.*/PUID=$USER_UID/" "$REPO_DIR/arr-stack/.env"
+    sed -i "s/^PGID=.*/PGID=$USER_GID/" "$REPO_DIR/arr-stack/.env"
+    
+    # Dynamically set TZ based on host
+    if command -v timedatectl >/dev/null 2>&1; then
+        HOST_TZ=$(timedatectl show -p Timezone --value 2>/dev/null)
+    elif [ -f "/etc/timezone" ]; then
+        HOST_TZ=$(cat /etc/timezone)
+    fi
+    
+    if [ -n "$HOST_TZ" ]; then
+        sed -i "s|^TZ=.*|TZ=$HOST_TZ|" "$REPO_DIR/arr-stack/.env"
+        echo "✓ Created arr-stack/.env with your PUID=$USER_UID, PGID=$USER_GID, and TZ=$HOST_TZ."
+    else
+        echo "✓ Created arr-stack/.env with your PUID=$USER_UID and PGID=$USER_GID."
+    fi
+fi

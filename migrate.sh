@@ -125,6 +125,20 @@ if [ ! -f "./arr-stack/.env" ]; then
     else
         echo "✓ Created ./arr-stack/.env with your PUID=$USER_UID and PGID=$USER_GID."
     fi
+    
+    echo ""
+    echo "--- Stack Configuration ---"
+    read -p "Enter the absolute path to your media directory [default: /mnt/media]: " USER_MEDIA_ROOT
+    USER_MEDIA_ROOT=${USER_MEDIA_ROOT:-/mnt/media}
+    
+    if grep -q "^MEDIA_ROOT=" ./arr-stack/.env; then
+        sed -i "s|^MEDIA_ROOT=.*|MEDIA_ROOT=$USER_MEDIA_ROOT|" ./arr-stack/.env
+    else
+        echo "MEDIA_ROOT=$USER_MEDIA_ROOT" >> ./arr-stack/.env
+    fi
+    echo "✓ Set MEDIA_ROOT=$USER_MEDIA_ROOT in .env"
+    echo "---------------------------"
+    echo ""
 fi
 
 echo "=========================================================="

@@ -27,8 +27,25 @@ TZ=UTC
 MEDIA_ROOT=/mnt/media
 EOF
 
-# 2. Run the script with simulated inputs
-export TEST_MEDIA_ROOT="/mnt/custom/nas/plex"
+# 2. Mock interactive binaries (whiptail and clear) to test TUI logic headlessly
+mkdir -p "$TEST_DIR/bin"
+cat << 'MOCK' > "$TEST_DIR/bin/whiptail"
+#!/bin/bash
+# Mock whiptail outputs the simulated user input to stderr
+echo "/mnt/mocked/whiptail/path" >&2
+exit 0
+MOCK
+chmod +x "$TEST_DIR/bin/whiptail"
+
+cat << 'MOCK' > "$TEST_DIR/bin/clear"
+#!/bin/bash
+exit 0
+MOCK
+chmod +x "$TEST_DIR/bin/clear"
+
+# Prepend mocks to PATH
+export PATH="$TEST_DIR/bin:$PATH"
+unset TEST_MEDIA_ROOT
 
 # Run it
 "$TEST_DIR/scripts/init_env.sh" > /dev/null
@@ -47,10 +64,10 @@ else
     fail "PUID injection failed"
 fi
 
-if grep -q "MEDIA_ROOT=/mnt/custom/nas/plex" "$ENV_FILE"; then
-    pass "MEDIA_ROOT was correctly captured from prompt override and injected"
+if grep -q "MEDIA_ROOT=/mnt/mocked/whiptail/path" "$ENV_FILE"; then
+    pass "MEDIA_ROOT was correctly captured from the whiptail TUI and injected"
 else
-    fail "MEDIA_ROOT injection failed"
+    fail "MEDIA_ROOT TUI injection failed"
 fi
 
 if grep -q "TZ=" "$ENV_FILE" && ! grep -q "TZ=UTC" "$ENV_FILE"; then

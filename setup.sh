@@ -4,7 +4,7 @@
 
 set -e
 
-if command -v whiptail >/dev/null 2>&1; then
+if command -v whiptail >/dev/null 2>&1 && [ -z "$DISABLE_WHIPTAIL" ]; then
     whiptail --title "Odin Media Server - Setup" --msgbox "Welcome to the Odin Media Server automated setup!\n\nThis wizard will configure Tailscale, Caddy, and your Docker container stack." 10 60
 fi
 

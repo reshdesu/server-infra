@@ -26,16 +26,16 @@ restore: ## Restore Docker container databases from /mnt/media/Backups
 	@chmod +x restore-configs.sh
 	@./restore-configs.sh
 
-test: ## Run the local regression test suite
-	@chmod +x tests/test_init_env.sh
-	@./tests/test_init_env.sh
+test: ## Run the full suite of regression and integration tests securely inside a Docker CI sandbox
+	@echo "Building isolated Docker CI sandbox..."
+	@sudo docker build -t odin-ci-sandbox -f tests/Dockerfile .
+	@echo "Running test suite inside sandbox..."
+	@sudo docker run --rm -v $(PWD):/workspace odin-ci-sandbox /bin/bash ./tests/docker_test_runner.sh
 
-coverage: test ## Run regression tests with kcov coverage analysis
-	@echo "Running kcov code coverage..."
-	@if ! command -v kcov >/dev/null 2>&1; then \
-		echo "\033[0;31mERROR: kcov is not installed. Run 'sudo apt-get install kcov' to install it.\033[0m"; \
-		exit 1; \
-	fi
+coverage: ## Run all tests inside the Docker CI sandbox with kcov coverage tracking
+	@echo "Building isolated Docker CI sandbox for coverage..."
+	@sudo docker build -t odin-ci-sandbox -f tests/Dockerfile . > /dev/null
+	@echo "Running code coverage analysis inside sandbox..."
 	@mkdir -p coverage
-	@kcov --clean --include-path=scripts coverage ./tests/test_init_env.sh > /dev/null 2>&1
-	@echo "\033[0;32m✓ Coverage analysis complete. See coverage/index.html for the detailed report.\033[0m"
+	@sudo docker run --rm -v $(PWD):/workspace odin-ci-sandbox /bin/bash -c "kcov --clean --include-path=scripts,setup.sh,migrate.sh,backup-configs.sh,restore-configs.sh coverage ./tests/docker_test_runner.sh > /dev/null 2>&1"
+	@echo "\033[0;32m✓ Full repository coverage analysis complete. See coverage/index.html for the detailed report.\033[0m"

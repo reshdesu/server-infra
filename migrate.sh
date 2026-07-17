@@ -4,7 +4,7 @@
 
 set -e
 
-if command -v whiptail >/dev/null 2>&1; then
+if command -v whiptail >/dev/null 2>&1 && [ -z "$DISABLE_WHIPTAIL" ]; then
     if ! whiptail --title "Odin Media Server - Migration" --yesno "Welcome to the Odin Media Server Migration tool!\n\nThis will safely shut down your native systemd Arr services and migrate them to Docker Compose.\n\nAre you sure you want to proceed?" 12 60; then
         echo "Migration cancelled."
         exit 0

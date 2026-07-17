@@ -10,10 +10,10 @@ NC='\033[0m' # No Color
 COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
 
-# Regex for Conventional Commits
+# Regex for Conventional Commits WITH mandatory scope
 # e.g., feat(api): add new endpoint
-# e.g., fix: resolve crash
-PATTERN="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9_-]+\))?: .+"
+# e.g., fix(docker): resolve crash
+PATTERN="^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)\([a-zA-Z0-9_-]+\): .+"
 
 if [[ ! "$COMMIT_MSG" =~ $PATTERN ]]; then
     echo -e "${RED}ERROR: Invalid commit message format!${NC}"
@@ -23,9 +23,9 @@ if [[ ! "$COMMIT_MSG" =~ $PATTERN ]]; then
     echo -e "Valid types: ${GREEN}feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert${NC}"
     echo -e ""
     echo -e "Examples:"
-    echo -e "  ${GREEN}feat: add new backup script${NC}"
+    echo -e "  ${GREEN}feat(backup): add new backup script${NC}"
     echo -e "  ${GREEN}fix(docker): resolve port conflict${NC}"
-    echo -e "  ${GREEN}docs: update readme instructions${NC}"
+    echo -e "  ${GREEN}docs(readme): update readme instructions${NC}"
     echo -e ""
     echo -e "Please edit your commit message and try again."
     exit 1

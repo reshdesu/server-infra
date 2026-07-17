@@ -140,10 +140,22 @@ services:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
       - TZ=${TZ:-UTC}
-      - VERSION=docker
+      - VERSION=latest
     volumes:
       - ./config/plex:/config
       - ${MEDIA_ROOT:-/mnt/media}:${MEDIA_ROOT:-/mnt/media}
     devices:
       - /dev/dri:/dev/dri # Passes through host GPU for hardware transcoding (Plex Pass required)
+    restart: unless-stopped
+
+  watchtower:
+    <<: *default-logging
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      # Check for updates every day at 4 AM
+      - WATCHTOWER_SCHEDULE=0 0 4 * * *
     restart: unless-stopped

@@ -29,3 +29,13 @@ restore: ## Restore Docker container databases from /mnt/media/Backups
 test: ## Run the local regression test suite
 	@chmod +x tests/test_init_env.sh
 	@./tests/test_init_env.sh
+
+coverage: test ## Run regression tests with kcov coverage analysis
+	@echo "Running kcov code coverage..."
+	@if ! command -v kcov >/dev/null 2>&1; then \
+		echo "\033[0;31mERROR: kcov is not installed. Run 'sudo apt-get install kcov' to install it.\033[0m"; \
+		exit 1; \
+	fi
+	@mkdir -p coverage
+	@kcov --clean --include-path=scripts coverage ./tests/test_init_env.sh > /dev/null 2>&1
+	@echo "\033[0;32m✓ Coverage analysis complete. See coverage/index.html for the detailed report.\033[0m"

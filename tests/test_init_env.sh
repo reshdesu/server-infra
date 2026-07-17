@@ -76,6 +76,23 @@ else
     fail "Timezone injection failed"
 fi
 
+
+# 4. Test the fallback branch to achieve 100% coverage
+echo -e "\n=== Running Fallback Branch Test ==="
+rm -f "$ENV_FILE"
+export DISABLE_WHIPTAIL=1
+
+# Run with simulated stdin for the read -p prompt
+echo "/mnt/mocked/fallback/path" | "$TEST_DIR/scripts/init_env.sh" > /dev/null
+
+if grep -q "MEDIA_ROOT=/mnt/mocked/fallback/path" "$ENV_FILE"; then
+    pass "MEDIA_ROOT was correctly captured from the fallback read prompt"
+else
+    fail "MEDIA_ROOT fallback injection failed"
+fi
+
 # Clean up
 rm -rf "$TEST_DIR"
+
 echo "=== All Tests Passed ==="
+exit 0

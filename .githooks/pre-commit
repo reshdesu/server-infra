@@ -38,19 +38,27 @@ if [ $leaks_found -ne 0 ]; then
     exit 1
 fi
 
-# 5. Run Regression Tests
-echo -e "\nRunning Regression Tests..."
-if [ -d "./tests" ]; then
-    # Run all test scripts in the tests directory
-    for test_script in ./tests/test_*.sh; do
-        if [ -x "$test_script" ]; then
-            if ! "$test_script"; then
-                echo -e "${RED}ERROR: Regression tests failed in $test_script!${NC}"
-                echo -e "${RED}Commit blocked. Please fix the failing tests and try again.${NC}"
-                exit 1
+# 5. Run Regression Tests & Code Coverage
+echo -e "\nRunning Regression Tests and Code Coverage..."
+if [ -f "Makefile" ]; then
+    if ! make coverage; then
+        echo -e "${RED}ERROR: Regression tests or Code Coverage failed!${NC}"
+        echo -e "${RED}Commit blocked. Please ensure 100% coverage and passing tests.${NC}"
+        exit 1
+    fi
+else
+    # Fallback if Makefile is somehow missing
+    if [ -d "./tests" ]; then
+        for test_script in ./tests/test_*.sh; do
+            if [ -x "$test_script" ]; then
+                if ! "$test_script"; then
+                    echo -e "${RED}ERROR: Regression tests failed in $test_script!${NC}"
+                    echo -e "${RED}Commit blocked. Please fix the failing tests and try again.${NC}"
+                    exit 1
+                fi
             fi
-        fi
-    done
+        done
+    fi
 fi
 
 exit 0

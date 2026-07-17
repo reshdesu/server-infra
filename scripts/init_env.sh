@@ -38,7 +38,7 @@ if [ ! -f "$ENV_FILE" ]; then
         USER_MEDIA_ROOT=$TEST_MEDIA_ROOT
     else
         # Try to use whiptail for a beautiful TUI popup, fallback to bash read if not installed
-        if command -v whiptail >/dev/null 2>&1; then
+        if command -v whiptail >/dev/null 2>&1 && [ -z "$DISABLE_WHIPTAIL" ]; then
             USER_MEDIA_ROOT=$(whiptail --title "Odin Media Server" --inputbox "Enter the absolute path to your media directory:" 10 60 "/mnt/media" 3>&1 1>&2 2>&3)
             if [ $? -ne 0 ]; then
                 USER_MEDIA_ROOT="/mnt/media" # Fallback if user hits Cancel or ESC

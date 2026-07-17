@@ -5,7 +5,7 @@
 set -e
 
 if command -v whiptail >/dev/null 2>&1 && [ -z "$DISABLE_WHIPTAIL" ]; then
-    whiptail --title "Odin Media Server - Setup" --msgbox "Welcome to the Odin Media Server automated setup!\n\nThis wizard will configure Tailscale, Caddy, and your Docker container stack." 10 60
+    whiptail --title "Media Server Infra - Setup" --msgbox "Welcome to the Media Server Infra automated setup!\n\nThis wizard will configure Tailscale, Caddy, and your Docker container stack." 10 60
 fi
 
 echo "=== Starting restoration script for Caddy ==="
@@ -87,7 +87,7 @@ fi
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Configuring daily backup cron job in /etc/cron.d/arr-stack-backup..."
 cat <<EOF | sudo tee /etc/cron.d/arr-stack-backup > /dev/null
-# Daily backup of Odin media server configurations at 3:00 AM
+# Daily backup of Media Server Infra configurations at 3:00 AM
 0 3 * * * root cd $REPO_DIR && ./backup-configs.sh > /dev/null 2>&1
 EOF
 sudo chmod 0644 /etc/cron.d/arr-stack-backup

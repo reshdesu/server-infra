@@ -1,8 +1,8 @@
-# Odin Media Server Infrastructure
+# Media Server Infra
 
 ![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)
 
-This repository is the central hub for configuring, deploying, and maintaining the **Odin Media Server**. It leverages an enterprise-grade DevOps architecture to guarantee perfect reproducibility, disaster recovery, and unbreakable code quality through isolated CI sandboxes.
+This repository is the central hub for configuring, deploying, and maintaining the **Media Server Infra**. It leverages an enterprise-grade DevOps architecture to guarantee perfect reproducibility, disaster recovery, and unbreakable code quality through isolated CI sandboxes.
 
 ## Core Features
 * 🚀 **Automated Provisioning**: One-command server setup using beautifully rendered interactive TUI (`whiptail`) wizards.
@@ -17,7 +17,7 @@ This repository is the central hub for configuring, deploying, and maintaining t
 * `configs/` - Configuration files for Caddy reverse proxy.
 * `systemd/` - Systemd service unit files.
 * `arr-stack/` - Docker Compose configurations for the Servarr system.
-* `dashboard/` - The static Odin Media Center dashboard files.
+* `dashboard/` - The static Media Server Infra dashboard files.
 * `scripts/` - Core utility scripts for dynamic `.env` injection.
 * `tests/` - The Docker-in-Docker CI testing harness and mocked binaries.
 * `.githooks/` - Pre-commit Git hooks for security scanning and 100% test coverage enforcement.

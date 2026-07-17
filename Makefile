@@ -1,9 +1,9 @@
-# Odin Media Server - Infrastructure Makefile
+# Media Server Infra - Infrastructure Makefile
 
-.PHONY: help setup migrate backup restore test
+.PHONY: help setup migrate backup restore test coverage
 
 help: ## Show this help message
-	@echo "Odin Media Server - Infrastructure Management"
+	@echo "Media Server Infra - Infrastructure Management"
 	@echo "-------------------------------------------"
 	@echo "Usage: make [target]"
 	@echo ""

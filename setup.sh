@@ -4,6 +4,10 @@
 
 set -e
 
+if command -v whiptail >/dev/null 2>&1; then
+    whiptail --title "Odin Media Server - Setup" --msgbox "Welcome to the Odin Media Server automated setup!\n\nThis wizard will configure Tailscale, Caddy, and your Docker container stack." 10 60
+fi
+
 echo "=== Starting restoration script for Caddy ==="
 
 echo "Configuring Caddy..."

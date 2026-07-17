@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required to push back to the repo
+
+      - name: Run Full Sandbox Test & Coverage
+        run: |
+          make coverage
+
+      - name: Parse Coverage & Update Badge
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Extract coverage percentage from kcov's JSON output
+          COVERAGE=$(cat coverage/docker_test_runner.sh*/coverage.json | jq -r '.percent_covered')
+          
+          # Round to 1 decimal place or whole number
+          COVERAGE_ROUNDED=$(printf "%.0f" "$COVERAGE")
+          
+          # Determine badge color based on coverage score
+          if [ "$COVERAGE_ROUNDED" -ge 100 ]; then
+            COLOR="brightgreen"
+          elif [ "$COVERAGE_ROUNDED" -ge 90 ]; then
+            COLOR="green"
+          elif [ "$COVERAGE_ROUNDED" -ge 80 ]; then
+            COLOR="yellowgreen"
+          elif [ "$COVERAGE_ROUNDED" -ge 70 ]; then
+            COLOR="yellow"
+          else
+            COLOR="red"
+          fi
+          
+          echo "Coverage: $COVERAGE% ($COLOR)"
+          
+          # Use sed to replace the existing badge URL in README.md
+          sed -i "s|https://img.shields.io/badge/Coverage-.*-.*\.svg|https://img.shields.io/badge/Coverage-${COVERAGE_ROUNDED}%25-${COLOR}.svg|g" README.md
+
+      - name: Commit and Push Updated Badge
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if git diff --exit-code README.md > /dev/null; then
+            echo "Badge is up to date, nothing to commit."
+          else
+            echo "Coverage badge changed! Committing to repo..."
+            git add README.md
+            git commit -m "docs(readme): update coverage badge [skip ci]"
+            git push
+          fi

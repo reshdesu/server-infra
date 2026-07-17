@@ -1,5 +1,7 @@
 # Odin Media Server Infrastructure
 
+![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)
+
 This repository is the central hub for configuring, deploying, and maintaining the **Odin Media Server**. It leverages an enterprise-grade DevOps architecture to guarantee perfect reproducibility, disaster recovery, and unbreakable code quality through isolated CI sandboxes.
 
 ## Core Features

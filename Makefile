@@ -39,4 +39,4 @@ coverage: ## Run all tests inside the Docker CI sandbox with kcov coverage track
 	@mkdir -p coverage
 	@sudo docker run --rm --security-opt seccomp=unconfined -v $(PWD)/coverage:/workspace/coverage odin-ci-sandbox /bin/bash -c "kcov --clean --include-path=/workspace coverage ./tests/docker_test_runner.sh > /dev/null 2>&1"
 	@sudo chown -R $$(id -u):$$(id -g) coverage
-	@echo "\033[0;32m✓ Full repository coverage analysis complete. See coverage/index.html for the detailed report.\033[0m"
+	@echo "\033[0;32m[SUCCESS] Full repository coverage analysis complete. See coverage/index.html for the detailed report.\033[0m"

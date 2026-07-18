@@ -38,7 +38,27 @@ if [ $leaks_found -ne 0 ]; then
     exit 1
 fi
 
-# 5. Run Regression Tests
+# 5. Check for Emojis in staged code
+if git diff --cached | python3 -c '
+import sys, re
+emoji_pattern = re.compile(r"[\U0001F300-\U0001F9FF\U00002600-\U000026FF\U00002700-\U000027BF]")
+found = False
+for line in sys.stdin:
+    if line.startswith("+") and not line.startswith("+++"):
+        if emoji_pattern.search(line):
+            print(f"Emote detected in added line: {line.strip()}")
+            found = True
+if found:
+    sys.exit(1)
+'; then
+    : # OK
+else
+    echo -e "${RED}ERROR: Staged changes contain emotes (emojis/symbols)!${NC}"
+    echo -e "${RED}Commit blocked. Please scrub all emotes and try again.${NC}"
+    exit 1
+fi
+
+# 6. Run Regression Tests
 echo "Running Regression Tests..."
 if [ -f "Makefile" ]; then
     if ! make test; then

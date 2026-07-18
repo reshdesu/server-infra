@@ -5,11 +5,11 @@
 This repository is the central hub for configuring, deploying, and maintaining the **Media Server Infra**. It leverages an enterprise-grade DevOps architecture to guarantee perfect reproducibility, disaster recovery, and unbreakable code quality through isolated CI sandboxes.
 
 ## Core Features
-* 🚀 **Automated Provisioning**: One-command server setup using beautifully rendered interactive TUI (`whiptail`) wizards.
-* 🐳 **Dockerized Stack**: Fully containerized media services (Plex, Sonarr, Radarr, Prowlarr, SABnzbd).
-* 🔒 **Zero-Config Networking**: Tailscale mesh network routing with automatic Let's Encrypt SSL/TLS certificates via Caddy.
-* 💾 **Automated Disaster Recovery**: Self-rotating, automated daily cron backups of all application databases.
-* 🛡️ **Bulletproof CI/CD**: A fully isolated Docker-in-Docker testing harness that enforces strict 100% test coverage before any code is committed.
+* **Automated Provisioning**: One-command server setup using beautifully rendered interactive TUI (`whiptail`) wizards.
+* **Dockerized Stack**: Fully containerized media services (Plex, Sonarr, Radarr, Prowlarr, SABnzbd).
+* **Zero-Config Networking**: Tailscale mesh network routing with automatic Let's Encrypt SSL/TLS certificates via Caddy.
+* **Automated Disaster Recovery**: Self-rotating, automated daily cron backups of all application databases.
+* **Bulletproof CI/CD**: A fully isolated Docker-in-Docker testing harness that enforces strict 100% test coverage before any code is committed.
 
 ---
 

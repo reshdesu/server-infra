@@ -91,7 +91,7 @@ cat <<EOF | sudo tee /etc/cron.d/arr-stack-backup > /dev/null
 0 3 * * * root cd $REPO_DIR && ./backup-configs.sh > /dev/null 2>&1
 EOF
 sudo chmod 0644 /etc/cron.d/arr-stack-backup
-echo "✓ Scheduled daily backup at 3:00 AM."
+echo "[SUCCESS] Scheduled daily backup at 3:00 AM."
 
 # Initialize Docker .env file for arr-stack if it doesn't exist
 "$REPO_DIR/scripts/init_env.sh"

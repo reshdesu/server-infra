@@ -26,9 +26,9 @@ if [ ! -f "$ENV_FILE" ]; then
     
     if [ -n "$HOST_TZ" ]; then
         sed -i "s|^TZ=.*|TZ=$HOST_TZ|" "$ENV_FILE"
-        echo "✓ Created arr-stack/.env with your PUID=$USER_UID, PGID=$USER_GID, and TZ=$HOST_TZ."
+        echo "[SUCCESS] Created arr-stack/.env with your PUID=$USER_UID, PGID=$USER_GID, and TZ=$HOST_TZ."
     else
-        echo "✓ Created arr-stack/.env with your PUID=$USER_UID and PGID=$USER_GID."
+        echo "[SUCCESS] Created arr-stack/.env with your PUID=$USER_UID and PGID=$USER_GID."
     fi
     
     echo ""
@@ -56,9 +56,9 @@ if [ ! -f "$ENV_FILE" ]; then
     else
         echo "MEDIA_ROOT=$USER_MEDIA_ROOT" >> "$ENV_FILE"
     fi
-    echo "✓ Set MEDIA_ROOT=$USER_MEDIA_ROOT in .env"
+    echo "[SUCCESS] Set MEDIA_ROOT=$USER_MEDIA_ROOT in .env"
     echo "---------------------------"
     echo ""
 else
-    echo "ℹ arr-stack/.env already exists. Skipping initialization."
+    echo "[INFO] arr-stack/.env already exists. Skipping initialization."
 fi

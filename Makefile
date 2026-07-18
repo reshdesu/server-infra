@@ -30,13 +30,13 @@ test: ## Run the full suite of regression and integration tests securely inside 
 	@echo "Building isolated Docker CI sandbox..."
 	@sudo docker build -t odin-ci-sandbox -f tests/Dockerfile . > /dev/null
 	@echo "Running test suite inside sandbox..."
-	@sudo docker run --rm --security-opt seccomp=unconfined -v $(PWD):/workspace odin-ci-sandbox /bin/bash ./tests/docker_test_runner.sh
+	@sudo docker run --rm --security-opt seccomp=unconfined odin-ci-sandbox /bin/bash ./tests/docker_test_runner.sh
 
 coverage: ## Run all tests inside the Docker CI sandbox with kcov coverage tracking
 	@echo "Building isolated Docker CI sandbox for coverage..."
 	@sudo docker build -t odin-ci-sandbox -f tests/Dockerfile . > /dev/null
 	@echo "Running code coverage analysis inside sandbox..."
 	@mkdir -p coverage
-	@sudo docker run --rm --security-opt seccomp=unconfined -v $(PWD):/workspace odin-ci-sandbox /bin/bash -c "kcov --clean --include-path=scripts,setup.sh,migrate.sh,backup-configs.sh,restore-configs.sh coverage ./tests/docker_test_runner.sh > /dev/null 2>&1"
+	@sudo docker run --rm --security-opt seccomp=unconfined -v $(PWD)/coverage:/workspace/coverage odin-ci-sandbox /bin/bash -c "kcov --clean --include-path=/workspace coverage ./tests/docker_test_runner.sh > /dev/null 2>&1"
 	@sudo chown -R $$(id -u):$$(id -g) coverage
 	@echo "\033[0;32m✓ Full repository coverage analysis complete. See coverage/index.html for the detailed report.\033[0m"

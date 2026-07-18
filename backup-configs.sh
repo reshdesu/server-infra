@@ -25,7 +25,7 @@ sudo docker compose -f ./arr-stack/docker-compose.yml stop
 
 # 3. Create tarball (exclusing Plex Cache to save space and time)
 echo "Archiving configs to $BACKUP_FILE (this may take a moment)..."
-sudo tar --exclude='plex/Library/Application Support/Plex Media Server/Cache' \
+sudo tar --exclude='config/plex/Library/Application Support/Plex Media Server/Cache' \
          -czf "$BACKUP_FILE" -C ./arr-stack config
 
 # 4. Start containers back up

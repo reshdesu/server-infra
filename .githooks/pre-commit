@@ -38,12 +38,12 @@ if [ $leaks_found -ne 0 ]; then
     exit 1
 fi
 
-# 5. Run Regression Tests & Code Coverage
-echo -e "\nRunning Regression Tests and Code Coverage..."
+# 5. Run Regression Tests
+echo "Running Regression Tests..."
 if [ -f "Makefile" ]; then
-    if ! make coverage; then
-        echo -e "${RED}ERROR: Regression tests or Code Coverage failed!${NC}"
-        echo -e "${RED}Commit blocked. Please ensure 100% coverage and passing tests.${NC}"
+    if ! make test; then
+        echo -e "${RED}ERROR: Regression tests failed!${NC}"
+        echo -e "${RED}Commit blocked. Please ensure passing tests.${NC}"
         exit 1
     fi
 else

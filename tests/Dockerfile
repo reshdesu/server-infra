@@ -17,4 +17,6 @@ RUN echo '#!/bin/bash\nexit 0' > /usr/local/bin/docker && chmod +x /usr/local/bi
 RUN git config --global --add safe.directory /workspace
 
 WORKDIR /workspace
+COPY . /workspace
+
 CMD ["/bin/bash", "./tests/docker_test_runner.sh"]

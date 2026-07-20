@@ -48,6 +48,12 @@ if [ -f "./systemd/caddy.service" ]; then
     echo "Copied systemd service definition"
 fi
 
+if [ -f "./systemd/docker-wait-for-media.conf" ]; then
+    sudo mkdir -p /etc/systemd/system/docker.service.d
+    sudo cp ./systemd/docker-wait-for-media.conf /etc/systemd/system/docker.service.d/override.conf
+    echo "Configured Docker to wait for media mount"
+fi
+
 # Create system user/group if they do not exist
 if ! getent group caddy >/dev/null; then
     sudo groupadd --system caddy

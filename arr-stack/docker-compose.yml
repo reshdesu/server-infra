@@ -157,6 +157,6 @@ services:
     environment:
       - DOCKER_API_VERSION=1.44
       - WATCHTOWER_CLEANUP=true
-      # Check for updates every day at 4 AM
-      - WATCHTOWER_SCHEDULE=0 0 4 * * *
+      # Check for updates every day at 3:17 AM to avoid registry rate limits
+      - WATCHTOWER_SCHEDULE=0 17 3 * * *
     restart: unless-stopped
